@@ -1,0 +1,30 @@
+services:
+#    php70:
+#        image: devops/phpcli:7.0
+#        volumes:
+#            - .:/app
+#        working_dir: /app
+#        command: >
+#            sh -c  "
+#                rm -rf vendor && rm -f composer.lock &&
+#                wget -O composer https://getcomposer.org/composer-2.phar &&
+#                chmod +x composer &&
+#                ./composer install &&
+#                php /app/vendor/phpunit/phpunit/phpunit --configuration /app/phpunit.xml --color=always --testdox --verbose &&
+#                rm composer
+#            "
+
+    php56:
+        image: devops/phpcli:5.6
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: >
+            sh -c  "
+                rm -rf vendor && rm -f composer.lock &&
+                wget -O composer https://getcomposer.org/composer-2.phar &&
+                chmod +x composer &&
+                ./composer install &&
+                php /app/vendor/phpunit/phpunit/phpunit --configuration /app/phpunit.xml --color=always --testdox --verbose &&
+                rm composer
+            "

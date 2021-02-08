@@ -15,6 +15,8 @@
 
 namespace Jaeger;
 
+use Exception;
+use InvalidArgumentException;
 use Jaeger\Reporter\RemoteReporter;
 use Jaeger\Reporter\Reporter;
 use Jaeger\Transport\TransportUdp;
@@ -56,6 +58,68 @@ class Config {
 
     }
 
+    /**
+     * @param array $arrConfig
+     *
+     * @return Jaeger|null
+     * @throws Exception
+     */
+    public static  function fromArray(array $arrConfig = []) {
+
+        if (empty($arrConfig['name']) || empty($arrConfig['host_port']) || empty($arrConfig['sampler_type'])) {
+            throw new InvalidArgumentException('Missing arguments: [name, host, sampler_type]');
+        }
+
+        $strName        = trim((string)$arrConfig['name']);
+        $strHostPort    = trim((string)$arrConfig['host_port']);
+        $strSamplerType = trim((string)$arrConfig['sampler_type']);
+
+        if ($strSamplerType !== 'const' && $strSamplerType !== 'probabilistic') {
+            throw new InvalidArgumentException('Only support sampling type: [const, probabilistic]');
+        }
+
+        $tracerConfig = self::getInstance();
+        $tracerConfig->gen128bit();
+
+        $tracerConfig::$propagator = Constants\PROPAGATOR_JAEGER;
+
+        $samplerValue = null;
+        if (isset($arrConfig['sampler_value'])) {
+            $samplerValue = $arrConfig['sampler_value'];
+        }
+
+        switch ($strSamplerType) {
+            case 'const':
+                $isSampled = false;
+                if ($samplerValue !== null) {
+                    $isSampled = (bool)$samplerValue;
+                }
+
+                $tracerConfig->setSampler(new ConstSampler($isSampled));
+                break;
+
+            case 'probabilistic':
+                $floatValue = 0.0;
+                if ($samplerValue !== null) {
+                    $floatValue = (float)$samplerValue;
+                    if ($floatValue < 0 || $floatValue > 1) {
+                        $floatValue = 0.0;
+                    }
+                }
+
+                $tracerConfig->setSampler(new ProbabilisticSampler($floatValue));
+                break;
+        }
+
+        $tracer = $tracerConfig->initTracer($strName, $strHostPort);
+
+        if (!$tracer) {
+            throw new RuntimeException('Could not initialize Jaeger');
+        }
+
+        return $tracer;
+    }
+
 
     public static function getInstance()
     {
@@ -69,10 +133,12 @@ class Config {
 
     /**
      * init jaeger, return can use flush  buffers
+     *
      * @param $serviceName
      * @param string $agentHostPort
-     * @return Jaeger|null
-     * @throws \Exception
+     *
+     * @return Jaeger|NoopTracer|null
+     * @throws Exception
      */
     public function initTracer($serverName, $agentHostPort = ''){
 
@@ -80,8 +146,8 @@ class Config {
             return NoopTracer::create();
         }
 
-        if($serverName == ''){
-            throw new \Exception("serverName require");
+        if($serverName === ''){
+            throw new Exception("serverName require");
         }
 
         if(isset(self::$tracer[$serverName]) && !empty(self::$tracer[$serverName])){
@@ -89,37 +155,35 @@ class Config {
         }
 
 
-        if($this->transport == null){
+        if($this->transport === null){
             $this->transport = new TransportUdp($agentHostPort);
         }
 
-        if($this->reporter == null) {
+        if($this->reporter === null) {
             $this->reporter = new RemoteReporter($this->transport);
         }
 
-        if($this->sampler == null){
+        if($this->sampler === null){
             $this->sampler = new ConstSampler(true);
         }
 
-        if($this->scopeManager == null){
+        if($this->scopeManager === null){
             $this->scopeManager = new ScopeManager();
         }
 
         $tracer = new Jaeger($serverName, $this->reporter, $this->sampler, $this->scopeManager);
 
-        if($this->gen128bit == true){
+        if($this->gen128bit === true){
             $tracer->gen128bit();
         }
 
-        if(self::$propagator == \Jaeger\Constants\PROPAGATOR_ZIPKIN){
+        if(self::$propagator === \Jaeger\Constants\PROPAGATOR_ZIPKIN){
             $tracer->setPropagator(new ZipkinPropagator());
         }else{
             $tracer->setPropagator(new JaegerPropagator());
         }
 
-
         self::$tracer[$serverName] = $tracer;
-
 
         return $tracer;
     }

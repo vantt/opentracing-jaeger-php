@@ -15,8 +15,10 @@
 
 namespace Jaeger;
 
+use OpenTracing\SpanContext as SpanContextInterface;
 
-class SpanContext implements \OpenTracing\SpanContext{
+class SpanContext implements SpanContextInterface {
+
     // traceID represents globally unique ID of the trace.
     // Usually generated as a random number.
     public $traceIdLow;
@@ -52,15 +54,27 @@ class SpanContext implements \OpenTracing\SpanContext{
         $this->debugId = $debugId;
     }
 
+    public function getTraceId(): string {
+        return $this->traceIdLowToString();
+    }
 
-    public function getBaggageItem($key){
+
+    public function getSpanId(): string {
+        return $this->spanIdToString();
+    }
+
+    public function getParentId(): ?string {
+        return $this->parentIdToString();
+    }
+
+    public function getBaggageItem(string $key): ?string {
         return isset($this->baggage[$key]) ? $this->baggage[$key] : null;
     }
 
 
-    public function withBaggageItem($key, $value){
+    public function withBaggageItem(string $key, string $value): SpanContextInterface {
         $this->baggage[$key] = $value;
-        return true;
+        return $this;
     }
 
     public function getIterator()

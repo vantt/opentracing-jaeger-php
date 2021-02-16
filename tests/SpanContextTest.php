@@ -17,6 +17,7 @@ namespace tests;
 
 use PHPUnit\Framework\TestCase;
 use Jaeger\SpanContext;
+use OpenTracing\SpanContext as SpanContextInterface;
 
 class SpanContextTest extends TestCase
 {
@@ -36,16 +37,18 @@ class SpanContextTest extends TestCase
     public function testWithBaggageItem(){
         $spanContext = $this->getSpanContext();
         $res = $spanContext->withBaggageItem('version', '2.0.0');
-        $this->assertTrue($res);
+
+        $version = $spanContext->getBaggageItem('version');
+        $this->assertEquals('2.0.0' , $version);
     }
 
 
     public function testGetBaggageItem(){
         $spanContext = $this->getSpanContext();
-        $res = $spanContext->withBaggageItem('version', '2.0.0');
+        $spanContext->withBaggageItem('version', '2.0.0');
 
         $version = $spanContext->getBaggageItem('version');
-        $this->assertTrue($res == $version);
+        $this->assertEquals('2.0.0' , $version);
 
         $service = $spanContext->getBaggageItem('service');
         $this->assertNull($service);

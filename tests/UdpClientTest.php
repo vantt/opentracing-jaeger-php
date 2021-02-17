@@ -25,7 +25,7 @@ class UdpClientTest extends TestCase
 
     public $agentClient = null;
 
-    public function setUp(){
+    public function setUp(): void {
         $this->agentClient = $this->createMock(AgentClient::class);
         $this->udpClient = new UdpClient('localhost:6831', $this->agentClient);
     }

@@ -18,7 +18,7 @@ rundocker () {
         ${DOCKER_IMAGE} "$@"
 }
 
-IMAGES="php:7.4-cli-alpine php:7.2-cli-alpine php:8.0-cli-alpine php:7.3-cli-alpine php:7.1-cli-alpine"
+IMAGES="php:7.4-cli-alpine php:8.0-cli-alpine php:7.3-cli-alpine php:7.2-cli-alpine php:7.1-cli-alpine"
 
 for DOCKER_IMAGE in ${IMAGES}; do
     rundocker  sh -c  "

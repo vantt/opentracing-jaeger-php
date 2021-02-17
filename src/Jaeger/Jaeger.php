@@ -51,7 +51,7 @@ class Jaeger implements TracerInterface
     /** @var Propagator|null */
     public $propagator = null;
 
-    public function __construct($serverName = '', Reporter $reporter, Sampler $sampler, ScopeManager $scopeManager)
+    public function __construct($serverName, Reporter $reporter, Sampler $sampler, ScopeManager $scopeManager)
     {
         $this->reporter = $reporter;
 
@@ -87,9 +87,9 @@ class Jaeger implements TracerInterface
      * @param string $operationName
      * @param array  $options
      *
-     * @return Span
+     * @return SpanInterface
      */
-    public function startSpan(string $operationName, $options = []): Span
+    public function startSpan(string $operationName, $options = []): SpanInterface
     {
         if (!($options instanceof StartSpanOptions)) {
             $options = StartSpanOptions::create($options);
@@ -145,7 +145,7 @@ class Jaeger implements TracerInterface
      * @param string               $format
      * @param                      $carrier
      */
-    public function inject(SpanContextInterface $spanContext, $format, &$carrier): void
+    public function inject(SpanContextInterface $spanContext, string $format, &$carrier): void
     {
         if ($format === Formats\TEXT_MAP) {
             $this->propagator->inject($spanContext, $format, $carrier);

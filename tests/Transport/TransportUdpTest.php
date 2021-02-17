@@ -23,7 +23,7 @@ class TransportUdpTest extends TestCase
 
     public $tran = null;
 
-    public function setUp(){
+    public function setUp(): void {
         $this->tran = new TransportUdp('localhost:6831');
     }
 

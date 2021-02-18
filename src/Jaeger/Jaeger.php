@@ -21,14 +21,15 @@ use OpenTracing\ScopeManager as ScopeManagerInterface;
 use OpenTracing\Span as SpanInterface;
 use OpenTracing\SpanContext as SpanContextInterface;
 use OpenTracing\Tracer as TracerInterface;
-use OpenTracing\{Formats, StartSpanOptions, Reference};
+use OpenTracing\{Buildable, BuildableInterface, Formats, StartSpanOptions, Reference};
 use OpenTracing\UnsupportedFormatException;
 
 use Jaeger\Reporter\Reporter;
 use Jaeger\Propagator\Propagator;
 
-class Jaeger implements TracerInterface
+class Jaeger implements TracerInterface, BuildableInterface
 {
+    use Buildable;
 
     private $reporter = null;
 

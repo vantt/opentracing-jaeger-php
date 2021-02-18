@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.com/jukylin/jaeger-php.svg?branch=beforePHP70)](https://travis-ci.com/vantt/opentracing-jaeger-php)
+[![Build Status](https://api.travis-ci.com/vantt/opentracing-jaeger-php.svg?branch=beforePHP70)](https://travis-ci.com/vantt/opentracing-jaeger-php?branch=beforePHP70)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg)](https://php.net/)
-[![License](https://img.shields.io/github/license/jukylin/jaeger-php.svg)](https://github.com/vantt/opentracing-jaeger-php/blob/master/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/vantt/opentracing-jaeger-php/badge.svg?branch=master)](https://coveralls.io/github/vantt/opentracing-jaeger-php?branch=beforePHP70)
+[![License](https://img.shields.io/github/license/vantt/opentracing-jaeger-php.svg)](https://github.com/vantt/opentracing-jaeger-php/blob/master/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/vantt/opentracing-jaeger-php/badge.svg?branch=beforePHP70)](https://coveralls.io/github/vantt/opentracing-jaeger-php?branch=beforePHP70)
 
 # jaeger-php
 
@@ -11,7 +11,7 @@ Install via composer.
 
 ```
 composer config minimum-stability dev
-composer require jukylin/jaeger-php
+composer require vantt/opentracing-jaeger-php
 ```
 
 ## Init Jaeger-php

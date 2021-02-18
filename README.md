@@ -87,7 +87,7 @@ use OpenTracing\GlobalTracer;
 
 // extract the span context
 $spanContext = GlobalTracer::get()->extract(
-    Formats\HTTP_HEADERS,
+    Formats\TEXT_MAP,
     getallheaders()
 );
 
@@ -256,7 +256,7 @@ use OpenTracing\GlobalTracer;
 use OpenTracing\Formats;
 
 $tracer = GlobalTracer::get();
-$spanContext = $tracer->extract(Formats\HTTP_HEADERS, getallheaders());
+$spanContext = $tracer->extract(Formats\TEXT_MAP, getallheaders());
 $tracer->buildSpan('my_span')->asChildOf($spanContext)->startActive();
 
 ```
@@ -308,12 +308,6 @@ $config::$propagator = \Jaeger\Constants\PROPAGATOR_ZIPKIN;
 $span->finish();
 $config->flush();
 ```
-
-## More example
-
-- [HTTP](https://github.com/jukylin/jaeger-php/blob/master/example/HTTP.php)
-- [Hprose](https://github.com/jukylin/blog/blob/master/Uber%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%BD%E8%B8%AA%E7%B3%BB%E7%BB%9FJaeger%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%A1%88%E4%BE%8B%E3%80%90PHP%20%20%20Hprose%20%20%20Go%E3%80%91.md#跨语言调用案例)
-- [Istio](https://github.com/jukylin/jaeger-php/blob/master/example/README.md)
 
 ## Features
 

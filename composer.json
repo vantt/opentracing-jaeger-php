@@ -1,5 +1,5 @@
 {
-    "name": "vantt/opentracing-jaeger",
+    "name": "vantt/opentracing-jaeger-php",
     "description": "php opentracing client for jaeger",
     "keywords": [
         "jaeger",

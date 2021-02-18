@@ -15,17 +15,17 @@
 
 namespace Jaeger;
 
-use Jaeger\Sampler\Sampler;
 use OpenTracing\Exceptions\UnsupportedFormat;
 use OpenTracing\SpanContext;
 use OpenTracing\Formats;
-use OpenTracing\Tracer;
-use Jaeger\Reporter\Reporter;
+use OpenTracing\Tracer as TracerInterface;
 use OpenTracing\StartSpanOptions;
 use OpenTracing\Reference;
+use Jaeger\Sampler\Sampler;
+use Jaeger\Reporter\Reporter;
 use Jaeger\Propagator\Propagator;
 
-class Jaeger implements Tracer{
+class Jaeger implements TracerInterface {
 
     private $reporter = null;
 

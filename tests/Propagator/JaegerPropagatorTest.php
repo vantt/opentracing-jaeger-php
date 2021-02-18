@@ -139,11 +139,9 @@ class JaegerPropagatorTest extends TestCase{
     public function testExtractPsr7(){
 
         $jaeger = new JaegerPropagator();
-        $carrier = [];
-        $carrier[] = [strtoupper(Constants\Tracer_State_Header_Name) => '15ae2e5c8e2ecc85:15ae2e5c8e2ecc85:0:1'];
+        $carrier = [strtoupper(Constants\Tracer_State_Header_Name) => '15ae2e5c8e2ecc85:15ae2e5c8e2ecc85:0:1'];
 
         $context = $jaeger->extract(Formats\TEXT_MAP, $carrier);
-        var_dump($context);
         $this->assertTrue($context->traceIdLow == 1562237095801441413);
         $this->assertTrue($context->parentId == 0);
         $this->assertTrue($context->spanId == 1562237095801441413);

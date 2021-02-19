@@ -31,13 +31,13 @@
         ]
     },
     "archive": {
-        "exclude": ["./docker-compose.yml","./runTests.sh"]
+        "exclude": ["./docker-compose.yml","./runTests.sh", "./e2e"]
     },
     "scripts": {
         "test": "./vendor/bin/phpunit"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5||^8.5",
-        "php-coveralls/php-coveralls": "^2.4"
+        "phpunit/phpunit": "^6.5.14 || ^7.0 || ^9.0",
+        "phpunit/php-code-coverage": "^6.1||^9.1"
     }
 }

@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+    jaeger:
+        image: jaegertracing/all-in-one:1.21
+        restart: always
+        environment:
+            - JAEGER_DISABLED=true # will not see 'jaeger-query' events in UI anymore
+        command:
+          [
+                  "--processor.jaeger-binary.server-max-packet-size=100000",
+                  "--processor.jaeger-compact.server-max-packet-size=100000",
+                  "--memory.max-traces=5000",
+          ]
+        ports:
+            - 16686:16686 # The UI port, dont need to expose here since traefik will do forwarding
+            - 5775:5775
+            - 6831:6831/udp
+            - 6832:6832/udp
+            - 5778:5778
+            - 14268:14268
+            - 14250:14250
+            - 9411:9411

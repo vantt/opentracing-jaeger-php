@@ -27,15 +27,13 @@
             </testsuite>
         </testsuites>
         <filter>
-            <blacklist>
-                <file>./src/Jaeger/Reporter/Reporter.php</file>
-                <file>./src/Jaeger/Sampler/Sampler.php</file>
-                <file>./src/Jaeger/Transport/Transport.php</file>
-                <file>./src/Jaeger/Thrift</file>
-            </blacklist>
             <whitelist>
                 <directory>./src</directory>
             </whitelist>
         </filter>
-
+        <logging>
+            <log type="coverage-text" target="php://stdout"/>
+            <log type="coverage-html" target="build/coverage/html-coverage"/>
+            <log type="coverage-clover" target="build/coverage/clover.xml"/>
+        </logging>
 </phpunit>

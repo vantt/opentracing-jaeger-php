@@ -7,11 +7,24 @@ php:
   - '7.4'
   - '8.0'
 
-install:
-  - composer install
+cache:
+  directories:
+    - $HOME/.composer/cache
 
+# Note: Code coverage requires php-xDebug extension enabled on CI server
+install:
+  - travis_retry composer install --no-interaction --no-suggest
+
+before_script:
+  - phpenv config-add .travis/php.ini
+  - php -i
+
+# Testing the app (see phpunit.xml) for configs, generating Code Coverage report
 script:
-  - composer test
+  - composer test -- --coverage-clover=coverage.xml
+
+#after_script:
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  # Submit coverage report to https://codecov.io
+  - bash <(curl -s https://codecov.io/bash)
